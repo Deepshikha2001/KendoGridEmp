@@ -1,0 +1,80 @@
+﻿@{
+    ViewData["Title"] = "Grid";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Kendo UI Snippet</title>
+
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/themes/7.0.2/default/default-ocean-blue.css" /> 
+    <link rel="stylesheet"
+          href="https://unpkg.com/@@progress/kendo-font-icons/dist/index.css" />
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> 
+    <script src="https://kendo.cdn.telerik.com/2023.3.1114/js/jszip.min.js"></script> 
+    <script src="https://kendo.cdn.telerik.com/2023.2.829/mjs/kendo.all.js" type="module"></script> 
+</head>
+<body>
+
+    <div id="grid"></div>
+    <span class="k-icon k-i-gear k-icon-xs"></span>
+    <script>
+        $(document).ready(function () {
+
+            $("#grid").kendoGrid({
+                toolbar: ["create", "excel", "PDF", "search"],
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: "/Emp/GetData/",
+
+                            dataType: "json"
+                        },
+                        update: {
+                            url: "/Emp/Edit/",
+                            dataType: "json"
+                        },
+                        destroy: {
+                            url: "/Emp/Delete/",
+                            dataType: "json"
+                        },
+                        create: {
+                            url: "/Emp/Create/",
+                            dataType: "json"
+                        },
+                    },
+                    schema: {
+                        model: {
+                            id: "id",
+                        }
+                    },
+                    pageSize: 8,
+                },
+                pageable: true,
+
+                columns: [
+                    { field: "name", title: "Name" },
+                    { field: "age", title: "Age" },
+                    { field: "contact", title: "Contact", icon:"k-icon k-i-gear k-icon-xs"},
+
+                    { field: "designation", title: "Designation" },
+                    { title: "Actions",  command: ["edit", "destroy"]  },
+                ],
+                editable: "inline",
+  //              columnMenu: {
+  //              autoSize: true,
+  //              componentType: "tabbed"
+  // // },
+  //               dataBound: function () {
+  //                   this.autoFitColumns();
+  //               },
+               
+                // save: function () {
+                //     this.refresh();
+                // }
+            });
+        });
+    </script>
+</body>
+</html>
