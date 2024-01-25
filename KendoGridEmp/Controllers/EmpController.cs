@@ -30,6 +30,7 @@ namespace KendoGridEmp.Controllers
             context.SaveChanges();
             return new JsonResult(data);
         }
+        [HttpPost]
         public IActionResult Edit(Employee model)
         {
             context.Employees.Update(model);
