@@ -12,6 +12,7 @@ namespace KendoGridEmp.Models
         {
         }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
     }
 }

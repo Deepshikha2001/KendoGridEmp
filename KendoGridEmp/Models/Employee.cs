@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KendoGridEmp.Models
 {
@@ -10,5 +11,9 @@ namespace KendoGridEmp.Models
         public int Age { get; set; }
         public double Contact { get; set; }
         public string Designation { get; set; }
+
+        [ForeignKey("Categories")]
+        public int CategoryId { get; set; }
+        public Category Categories { get; set; }
     }
 }
