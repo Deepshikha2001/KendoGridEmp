@@ -19,36 +19,38 @@ namespace KendoGridEmp.Controllers
             return View();
         }
 
-        //[HttpGet]
-        //public IActionResult GetCategories()
-        //{
-        //    var categories = context.Categories.Select(c => new { categoryId = c.CategoryId, name = c.CategoryName }).ToList();
-        //    return Json(categories);
-        //}
-
-        //public IActionResult GetData()
-        //{
-        //    var categories = (from c in context.Employees
-        //                      join emp in context.Categories on c.Id equals emp.CategoryId
-        //                      select new
-        //                      {
-        //                          categoryId = c.CategoryId,
-        //                          name = c.CategoryName
-        //                      }).ToList();
-        //    return Json(categories);
-        //}
-        public IActionResult GetData()
-        {
-            var result = context.Employees.Include(e => e.Categories).ToList();
-            return Json(result);
-        }
-
         [HttpGet]
         public IActionResult GetCategories()
         {
             var categories = context.Categories.Select(c => new { categoryId = c.CategoryId, name = c.CategoryName }).ToList();
             return Json(categories);
         }
+
+        public IActionResult GetData()
+        {
+            var result = (from e in context.Employees
+                          join c in context.Categories on e.CategoryId equals c.CategoryId
+                          select new
+                          {
+                              id = e.Id,
+                              name = e.Name,
+                              age = e.Age,
+                              contact = e.Contact,
+                              designation = e.Designation,
+                              //CategoryId = c.CategoryId,
+                              categoryName = c.CategoryName
+                          }).ToList();
+
+            return  Json (result);
+        }
+
+        //public IActionResult GetData()
+        //{
+        //    var result = context.Employees.Include(e => e.Categories).ToList();
+        //    return Json(result);
+        //}
+
+       
 
         public IActionResult Delete(int id)
         {
@@ -87,8 +89,8 @@ namespace KendoGridEmp.Controllers
                                             EmployeeAge = e.Age,
                                             EmployeeContact = e.Contact,
                                             EmployeeDesignation = e.Designation,
-                                            CategoryId = c.CategoryId,
-                                            CategoryName = c.CategoryName
+                                            categoryId = c.CategoryId,
+                                            categoryName = c.CategoryName
                                         }).FirstOrDefault();
 
             if (employeeWithCategory == null)
@@ -148,113 +150,3 @@ namespace KendoGridEmp.Controllers
 
 
 
-
-
-//using KendoGridEmp.Models;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.EntityFrameworkCore;
-//using System;
-//using System.Linq;
-
-//namespace KendoGridEmp.Controllers
-//{
-//    public class EmpController : Controller
-//    {
-//        private readonly EmpDbContext _context;
-
-//        public EmpController(EmpDbContext context)
-//        {
-//            _context = context;
-//        }
-
-//        public IActionResult Index()
-//        {
-//            return View();
-//        }
-
-//        public IActionResult GetData()
-//        {
-//            var result = _context.Employees.Include(e => e.Categories).ToList();
-//            return Json(result);
-//        }
-
-//        [HttpGet]
-//        public IActionResult GetCategories()
-//        {
-//            var categories = _context.Categories.Select(c => new { categoryId = c.CategoryId, name = c.Name }).ToList();
-//            return Json(categories);
-//        }
-
-//        [HttpPost]
-//        public IActionResult Delete(int id)
-//        {
-//            try
-//            {
-//                var employee = _context.Employees.FirstOrDefault(e => e.Id == id);
-//                if (employee == null)
-//                    return NotFound();
-
-//                _context.Employees.Remove(employee);
-//                _context.SaveChanges();
-
-//                return Json(employee);
-//            }
-//            catch (Exception ex)
-//            {
-//                return BadRequest($"Error deleting employee: {ex.Message}");
-//            }
-//        }
-
-//        [HttpPost]
-//        public IActionResult Create(Employee model, int categoryId)
-//        {
-//            try
-//            {
-//                var category = _context.Categories.FirstOrDefault(c => c.CategoryId == categoryId);
-//                if (category == null)
-//                    return BadRequest("Invalid category");
-
-//                model.Categories = category;
-
-//                _context.Employees.Add(model);
-//                _context.SaveChanges();
-
-//                return Json(model);
-//            }
-//            catch (Exception ex)
-//            {
-//                return BadRequest($"Error creating employee: {ex.Message}");
-//            }
-//        }
-
-//        [HttpPost]
-//        public IActionResult Edit(Employee model)
-//        {
-//            try
-//            {
-//                var existingEmployee = _context.Employees.Include(e => e.Categories).FirstOrDefault(e => e.Id == model.Id);
-//                if (existingEmployee == null)
-//                    return NotFound("Employee not found");
-
-//                existingEmployee.Name = model.Name;
-//                existingEmployee.Age = model.Age;
-//                existingEmployee.Contact = model.Contact;
-//                existingEmployee.Designation = model.Designation;
-
-//                var category = _context.Categories.FirstOrDefault(c => c.CategoryId == model.Categories.CategoryId);
-//                if (category == null)
-//                    return BadRequest("Invalid category");
-
-//                existingEmployee.Categories = category;
-
-//                _context.SaveChanges();
-
-//                return Ok("Record updated successfully.");
-//            }
-//            catch (Exception ex)
-//            {
-//                return BadRequest($"Error updating employee: {ex.Message}");
-//            }
-//        }
-//    }
-//}

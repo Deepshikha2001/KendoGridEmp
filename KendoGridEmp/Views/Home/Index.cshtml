@@ -141,7 +141,7 @@
                 { field: "contact", title: "Contact" },
                 { field: "designation", title: "Designation" },
                 // { field: "catgeories.CategoryId", title: "" },
-                { field: "categories.categoryName", title: "Category" },
+                { field: "categoryName", title: "Category" },
                 {
                     field: "CustomColumn", title: "Action", width: "75",
                     template: '<button type="button" id="editBtn" class="myMenu "><i class="fa-solid fa-ellipsis-vertical"></i></button>',
@@ -149,7 +149,6 @@
             ]
         }).data("kendoGrid");
 
-       
         // Create
         $("#saveBtn").click(function () {
             var formData = $("#myForm").serialize();
